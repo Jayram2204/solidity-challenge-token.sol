@@ -71,11 +71,7 @@ contract Token is IERC20, IMintableToken, IDividends {
         totalSupply = totalSupply.add(msg.value);
         balanceOf[msg.sender] = balanceOf[msg.sender].add(msg.value);
         
-        if (!_isHolder[msg.sender]) {
-            _holderIndex[msg.sender] = _holders.length;
-            _holders.push(msg.sender);
-            _isHolder[msg.sender] = true;
-        }
+        _addHolder(msg.sender);
         
         emit Transfer(address(0), msg.sender, msg.value);
     }
@@ -92,7 +88,8 @@ contract Token is IERC20, IMintableToken, IDividends {
         _removeHolder(msg.sender);
         
         emit Transfer(msg.sender, address(0), amount);
-        dest.transfer(amount);
+        (bool success, ) = dest.call{value: amount}("");
+        require(success, "Token: ETH transfer failed");
     }
     
     // ============================================
@@ -165,12 +162,7 @@ contract Token is IERC20, IMintableToken, IDividends {
         balanceOf[from] = balanceOf[from].sub(value);
         balanceOf[to] = balanceOf[to].add(value);
         
-        // Update holder list
-        if (balanceOf[to] == value && !_isHolder[to]) {
-            _holderIndex[to] = _holders.length;
-            _holders.push(to);
-            _isHolder[to] = true;
-        }
+        _addHolder(to);
         
         if (balanceOf[from] == 0) {
             _removeHolder(from);
@@ -179,6 +171,14 @@ contract Token is IERC20, IMintableToken, IDividends {
         emit Transfer(from, to, value);
     }
     
+        function _addHolder(address account) internal {
+            if (!_isHolder[account]) {
+                _isHolder[account] = true;
+                _holderIndex[account] = _holders.length;
+                _holders.push(account);
+            }
+        }
+
     function _removeHolder(address account) internal {
         if (_isHolder[account]) {
             uint256 index = _holderIndex[account];
