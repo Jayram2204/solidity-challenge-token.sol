@@ -1,0 +1,28 @@
+{
+  "name": "solidity-challenge-token.sol",
+  "version": "1.0.0",
+  "description": "token.sol file and passes all the tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jayram2204/solidity-challenge-token.sol.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Jayram2204/solidity-challenge-token.sol/issues"
+  },
+  "homepage": "https://github.com/Jayram2204/solidity-challenge-token.sol#readme",
+  "devDependencies": {
+    "@truffle/hdwallet-provider": "^2.1.15",
+    "chai": "^6.2.2",
+    "chai-as-promised": "^8.0.2",
+    "truffle": "^5.11.5",
+    "web3": "^4.16.0"
+  }
+}
